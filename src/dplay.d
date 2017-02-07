@@ -4,7 +4,7 @@ import std.stdio : write;
 import std.stdio;
 import std.file;
 import std.conv : to;
-//import std.algorithm : remove;
+import std.getopt;
 
 class Letter {
     char[][] letter;
@@ -22,12 +22,14 @@ class Letter {
     }
 
     //Mantenence Method, probably will not include in release execs
+    //*
     void writeSelf() {
     int i = 0;
         for(i = 0; i < letter.length; ++i) {
             write(letter[i]);
         }
     }
+    //*/
 }
 
 char[] removeNewlines(char[] stuff) {
@@ -41,17 +43,25 @@ int main(string[] args) {
     File lib;
     Letter[char] letters;
     string basePath = "/home/wesley/workspace/DPlay/fonts/";
-    string font = "default/";
-    char[] path;
-    path ~= basePath ~= font ~= ' ';
-    char[] input = to!(char[])(args[1]);
+    string font;
+    char[] path, input;
+
+    getopt(args, "file|f", &font);
+
+    path ~= basePath ~= font ~= "/ ";
+    input = to!(char[])(args[1]);
     //writeln("Setup done in: ");
     //writeln(path);
 
     for(i = 0; i < input.length; ++i) {
         letters[input[i]] = new Letter();
         path[path.length - 1] = input[i];
-        lib.open(to!string(path), "r");
+        try {
+            lib.open(to!string(path), "r");
+        } catch (std.exception.ErrnoException) {
+            writeln("Invalid font argument!");
+            return 42;
+        }
         while (!lib.eof) {
             letters[input[i]].addLine(to!(char[])(lib.readln()));
         }
