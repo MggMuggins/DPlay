@@ -43,28 +43,33 @@ char[] removeNewlines(char[] stuff) {
     return stuff;
 }
 
-int main(string[] args) {
-    int j = 0, i = 0;
-    File lib;
-    Letter[char] letters;
+char[] argHandle(string[] args) {
     string basePath = "/usr/local/DPlay/fonts/", font, altPath;
-    char[] path, input;
+    char[] path;
 
     getopt(args,
         "file|f", &font,
         "path|p", &altPath);
 
-    //Wish this were cleaner
-    if (altPath != null) {
-        if (altPath[altPath.length - 1] == '/') {
-            path = to!(char[])(altPath) ~ font ~ "/ ";
-        } else {
-            path = to!(char[])(altPath) ~ '/' ~ font ~ "/ ";
-        }
+    if (altPath == null) {
+        path ~= basePath ~ font ~ "/ ";
+    } else if (altPath[altPath.length - 1] == '/') {
+            path ~= altPath ~ font ~ "/ ";
     } else {
-        path ~= basePath ~= font ~= "/ ";
+            path ~= altPath ~ '/' ~ font ~ "/ ";
     }
-    input = to!(char[])(args[1]);
+    return path;
+}
+
+int main(string[] args) {
+    int j = 0, i = 0;
+    File lib;
+    Letter[char] letters;
+    char[] path, input;
+
+    path = argHandle(args);
+
+    input = to!(char[])(args[args.length - 1]);
     //writeln("Setup done in: ");
     //writeln(path);
 
