@@ -3,7 +3,10 @@ A little ASCII block text writer for Linux/Unix with support for multiple fonts 
 
 # Usage
 Arguments are as follows:
-```-f``` defines the font to use. The argument that follows this will be used as the name of the folder in the installed fonts folder.
+```--font|-f``` defines the font to use. The argument that follows this will be used as the name of the folder in the installed fonts folder.
+
+```--path|-p``` defines a directory to use for the font directory instead of the one the installFonts script creates.  The argument that follows this is the path to the fonts directory that isn't the default.
+
 The last argument for the program is used as the text to be converted to blocks. This is only one argument, so use quotation marks!
 
 # Contributing

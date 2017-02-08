@@ -16,23 +16,29 @@ class Letter {
     }
 
     void writeLine(int depth) {
-        letter[depth] = removeNewlines(letter[depth]);
-        write(letter[depth][]);
+        //Not the cleanest or best solution to this problem
+        try {
+            letter[depth] = removeNewlines(letter[depth]);
+            write(letter[depth][]);
+        } catch (core.exception.RangeError) {}
     }
 
     //Mantenence Method, probably will not include in release execs
-    //*
+    /*
     void writeSelf() {
     int i = 0;
         for(i = 0; i < letter.length; ++i) {
             write(letter[i]);
         }
-    }
-    //*/
+    } //*/
 }
 
 char[] removeNewlines(char[] stuff) {
     ulong i = stuff.length - 1;
+
+    if (i == -1) {
+        return stuff;
+    }
     stuff[i] = ' ';
     return stuff;
 }
@@ -41,13 +47,23 @@ int main(string[] args) {
     int j = 0, i = 0;
     File lib;
     Letter[char] letters;
-    string basePath = "/usr/local/DPlay/fonts/";
-    string font;
+    string basePath = "/usr/local/DPlay/fonts/", font, altPath;
     char[] path, input;
 
-    getopt(args, "file|f", &font);
+    getopt(args,
+        "file|f", &font,
+        "path|p", &altPath);
 
-    path ~= basePath ~= font ~= "/ ";
+    //Wish this were cleaner
+    if (altPath != null) {
+        if (altPath[altPath.length - 1] == '/') {
+            path = to!(char[])(altPath) ~ font ~ "/ ";
+        } else {
+            path = to!(char[])(altPath) ~ '/' ~ font ~ "/ ";
+        }
+    } else {
+        path ~= basePath ~= font ~= "/ ";
+    }
     input = to!(char[])(args[1]);
     //writeln("Setup done in: ");
     //writeln(path);
@@ -61,9 +77,9 @@ int main(string[] args) {
             writeln("Invalid font argument!");
             return 42;
         }
-        while (!lib.eof) {
+        do {
             letters[input[i]].addLine(to!(char[])(lib.readln()));
-        }
+        } while (!lib.eof);
         lib.close();
     }
     //writeln("Read into Objects done.");
@@ -75,6 +91,6 @@ int main(string[] args) {
         }
         writeln();
         ++j;
-    } while(j < letters[input[0]].letter.length);
+    } while (j < letters[input[0]].letter.length);
 	return 0;
 }
