@@ -1,6 +1,5 @@
 module main;
 
-import std.stdio : write;
 import std.stdio;
 import std.file;
 import std.conv : to;
