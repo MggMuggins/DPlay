@@ -42,7 +42,7 @@ int main(string[] args) {
     int j = 0, i = 0;
     File lib;
     Letter[char] letters;
-    string basePath = "/home/wesley/workspace/DPlay/fonts/";
+    string basePath = "/usr/local/DPlay/fonts/";
     string font;
     char[] path, input;
 

@@ -1,3 +1,4 @@
 #!/bin/bash
 
-cp -u -v -r fonts/ /usr/local/DPlay/fonts/
+mkdir /usr/local/DPlay
+cp -u -v -r fonts/ /usr/local/DPlay/fonts

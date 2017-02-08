@@ -15,7 +15,9 @@ Running the fonts install script (Linux) will install the fonts in ```/usr/local
 Ubuntu doesn't do permissions quite the same way that most debians do, so here is a little guide on getting the script to run without sudoing it. You might read up a bit on file permissions if you don't understand the topic before following this guide.
 
 Run ```sudo chown -R root:staff /usr/local``` to change the file group from root to staff.
+
 Run ```sudo usermod -a -G staff <userName>``` to add your user to the staff group, if it does not already belong to it. -a appends the list of groups rather than re-writing it, and -G takes a comma-separated list to do so. This may require you to re-login or reboot to take effect.
+
 Run ```sudo chmod -R g+w /usr/local``` to change the permissions on the file to allow the group to make changes. More info on ```chmod``` can be found here: https://help.ubuntu.com/community/FilePermissions
 
 After these changes, you should be able to run the font install script without any difficulty.
