@@ -13,6 +13,8 @@ The last argument for the program is used as the text to be converted to blocks.
 # Contributing
 This project is designed to be completely system-independent, so you may choose to use any IDE or build system you choose. Make sure to retain the system-independence of this repository on your first contribution, otherwise your pull request may be turned down. You must have fonts installed for the program to work. See "Installing Fonts" for details on how to do this.
 
+Requirements for building this project and contributing are git, and the dmd (https://dlang.org). You will also need the software you choose to use for your build system.
+
 ## dub
 To use this as a dub project, run ```dub init``` in the repository directory you cloned using ```git clone```. You may use anything for your project settings that you want, since those files will never be shared publically. 
 

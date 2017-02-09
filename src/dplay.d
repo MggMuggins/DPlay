@@ -22,20 +22,14 @@ class Letter {
             write(letter[depth][]);
         } catch (core.exception.RangeError) {}
     }
+}
 
-    //Mantenence Method, probably will not include in release execs
-    /*
-    void writeSelf() {
-    int i = 0;
-        for(i = 0; i < letter.length; ++i) {
-            write(letter[i]);
-        }
-    } //*/
+struct PathInfo {
+    string basePath = "/usr/local/DPlay/fonts/", font, altPath;
 }
 
 char[] removeNewlines(char[] stuff) {
     ulong i = stuff.length - 1;
-
     if (i == -1) {
         return stuff;
     }
@@ -43,20 +37,25 @@ char[] removeNewlines(char[] stuff) {
     return stuff;
 }
 
-char[] argHandle(string[] args) {
-    string basePath = "/usr/local/DPlay/fonts/", font, altPath;
-    char[] path;
-
+//Handles path related arguments
+PathInfo argHandle(string[] args) {
+    PathInfo pathParts;
     getopt(args,
-        "file|f", &font,
-        "path|p", &altPath);
+        "file|f", &pathParts.font,
+        "path|p", &pathParts.altPath);
+    return pathParts;
+}
 
-    if (altPath == null) {
-        path ~= basePath ~ font ~ "/ ";
-    } else if (altPath[altPath.length - 1] == '/') {
-            path ~= altPath ~ font ~ "/ ";
+char[] pathHandle(string[] args) {
+    PathInfo pathParts;
+    pathParts = argHandle(args);
+    char[] path;
+    if (pathParts.altPath == null) {
+        path ~= pathParts.basePath ~ pathParts.font ~ "/ ";
+    } else if (pathParts.altPath[pathParts.altPath.length - 1] == '/') {
+            path ~= pathParts.altPath ~ pathParts.font ~ "/ ";
     } else {
-            path ~= altPath ~ '/' ~ font ~ "/ ";
+            path ~= pathParts.altPath ~ '/' ~ pathParts.font ~ "/ ";
     }
     return path;
 }
@@ -67,12 +66,11 @@ int main(string[] args) {
     Letter[char] letters;
     char[] path, input;
 
-    path = argHandle(args);
+    path = pathHandle(args);
 
     input = to!(char[])(args[args.length - 1]);
-    //writeln("Setup done in: ");
-    //writeln(path);
 
+    //Reading into input from files
     for(i = 0; i < input.length; ++i) {
         letters[input[i]] = new Letter();
         path[path.length - 1] = input[i];
@@ -87,9 +85,8 @@ int main(string[] args) {
         } while (!lib.eof);
         lib.close();
     }
-    //writeln("Read into Objects done.");
-    //writeln("Beginning write-out");
-    //writeln("While condition = ", letters[input[0]].letter.length);
+
+    //And the writing statement. I should modularize this...
     do {
         for(i = 0; i < input.length; ++i) {
             letters[input[i]].writeLine(j);
