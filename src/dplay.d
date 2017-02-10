@@ -16,16 +16,15 @@ class Letter {
     }
 
     void writeLine(int depth) {
-        //Not the cleanest or best solution to this problem
-        try {
-            letter[depth] = removeNewlines(letter[depth]);
-            write(letter[depth][]);
-        } catch (core.exception.RangeError) {}
+        letter[depth] = removeNewlines(letter[depth]);
+        write(letter[depth][]);
     }
 }
 
 struct PathInfo {
-    string basePath = "/usr/local/DPlay/fonts/", font, altPath;
+    string basePath = "/usr/local/DPlay/fonts/";
+    string font = "default";
+    string altPath;
 }
 
 char[] removeNewlines(char[] stuff) {
@@ -37,25 +36,24 @@ char[] removeNewlines(char[] stuff) {
     return stuff;
 }
 
-//Handles path related arguments
 PathInfo argHandle(string[] args) {
-    PathInfo pathParts;
+    PathInfo parts;
     getopt(args,
-        "file|f", &pathParts.font,
-        "path|p", &pathParts.altPath);
-    return pathParts;
+        "file|f", &parts.font,
+        "path|p", &parts.altPath);
+    return parts;
 }
 
 char[] pathHandle(string[] args) {
-    PathInfo pathParts;
-    pathParts = argHandle(args);
+    PathInfo parts;
+    parts = argHandle(args);
     char[] path;
-    if (pathParts.altPath == null) {
-        path ~= pathParts.basePath ~ pathParts.font ~ "/ ";
-    } else if (pathParts.altPath[pathParts.altPath.length - 1] == '/') {
-            path ~= pathParts.altPath ~ pathParts.font ~ "/ ";
+    if (parts.altPath == null) {
+        path ~= parts.basePath ~ parts.font ~ "/ ";
+    } else if (parts.altPath[$ - 1] == '/') {
+            path ~= parts.altPath ~ parts.font ~ "/ ";
     } else {
-            path ~= pathParts.altPath ~ '/' ~ pathParts.font ~ "/ ";
+            path ~= parts.altPath ~ '/' ~ parts.font ~ "/ ";
     }
     return path;
 }
@@ -68,12 +66,12 @@ int main(string[] args) {
 
     path = pathHandle(args);
 
-    input = to!(char[])(args[args.length - 1]);
+    input = to!(char[])(args[$ - 1]);
 
     //Reading into input from files
     for(i = 0; i < input.length; ++i) {
         letters[input[i]] = new Letter();
-        path[path.length - 1] = input[i];
+        path[$ - 1] = input[i];
         try {
             lib.open(to!string(path), "r");
         } catch (std.exception.ErrnoException) {
