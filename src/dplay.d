@@ -70,7 +70,9 @@ int main(string[] args) {
 
     //Reading into input from files
     for(i = 0; i < input.length; ++i) {
-        letters[input[i]] = new Letter();
+        if (letters[input[i]] is null) {
+            letters[input[i]] = new Letter();
+        }
         path[$ - 1] = input[i];
         try {
             lib.open(to!string(path), "r");
